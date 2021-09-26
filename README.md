@@ -58,3 +58,9 @@ If you are not fond of custom cards, I leave below the list of useful entities i
 - input_select.accensione_automatica_caric
 - input_select.esclusione_1_riaccensione
 - input_select.esclusione_2_riaccensione
+
+# Notifications:
+
+The package is ready to send notifications using our [notification center](https://github.com/caiosweet/Package-Notification-HUB-AppDaemon/blob/main/README.md). If you do not use it, just change the action of two simple automations, inserting your notification services:
+- automation.notifica_accensione_carico_hub
+- automation.notifica_spegnimento_carico_hub
