@@ -1,7 +1,14 @@
+
+[![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook]
+
 # Package-load-control
 Home assistant package that prevents meter detachment
 
-[![Websitebadge]][website] [![Forum][forumbadge]][forum] [![telegrambadge]][telegram] [![facebookbadge]][facebook]
+The package has been designed in such a way as to intervene when the thresholds allowed by the meter are exceeded, once the disconnection procedure has been started a check will be carried out every 30 seconds, until the value has returned below the threshold, turning off the loads in the order set by us.
+
+In order to function properly, the switches must be kept off when the appliance is not in use, this is because the package takes into account the status of the switch.
+If you want to use it with the switches always on, just create [Switch Templates](https://www.home-assistant.io/integrations/switch.template/)
+
 
 # Requirements:
 
