@@ -11,3 +11,10 @@ Home assistant package that prevents meter detachment
 
 - copy the "controllo_carichi.yaml" file into the Home Assistant package folder
 - Compile your "secrets.yaml" file as the example
+
+# My Lovelace Card:
+> custom: 
+  > - [Lovelace Card Mod](https://github.com/thomasloven/lovelace-card-mod)
+  > - [Banner Card](https://github.com/nervetattoo/banner-card)
+  > - [Lovelace Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row)
+  > - [Custom Hui Element](https://github.com/thomasloven/lovelace-hui-element)
