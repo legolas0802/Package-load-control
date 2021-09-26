@@ -18,3 +18,43 @@ Home assistant package that prevents meter detachment
   > - [Banner Card](https://github.com/nervetattoo/banner-card)
   > - [Lovelace Paper Buttons Row](https://github.com/jcwillox/lovelace-paper-buttons-row)
   > - [Custom Hui Element](https://github.com/thomasloven/lovelace-hui-element)
+  > - [State Switch](https://github.com/thomasloven/lovelace-state-switch)
+ 
+ <p align="center">
+<img src="./assets/image/cc1.png">
+<br><br>
+</p>
+
+ <p align="center">
+<img src="./assets/image/cc2.png">
+<br><br>
+</p>
+
+ <p align="center">
+<img src="./assets/image/cc3.png">
+<br><br>
+</p>
+
+If you are not fond of custom cards, I leave below the list of useful entities in the frontend so that you can create your own custom cards:
+
+- automation.innesco_controllo_carichi
+- automation.notifica_accensione_carico_hub
+- automation.notifica_spegnimento_carico_hub
+- automation.accensione_ultimo_carico_spento
+- sensor.potenza
+- sensor.ultimo_carico
+- sensor.data_ultimo_intervento
+- input_select.selettore_kw_contatore
+- input_number.tempo_intervento
+- input_select.carico_1
+- input_select.carico_2
+- input_select.carico_3
+- input_select.carico_4
+- input_select.carico_5
+- input_select.carico_6
+- input_select.carico_7
+- input_select.carico_8
+- input_select.carico_9
+- input_select.accensione_automatica_caric
+- input_select.esclusione_1_riaccensione
+- input_select.esclusione_2_riaccensione
