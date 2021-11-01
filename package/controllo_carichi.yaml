@@ -325,7 +325,7 @@ automation:
         10999
         {% endif %}
         {%- endmacro -%}
-        {{(states('sensor.potenza'))|float > limite_kw()|float }}
+        {{(states('sensor.potenza'))|float(0) > limite_kw()|float(0) }}
       for:
         minutes: "{{ states('input_number.tempo_intervento')|int(0) }}"
     - platform: template
@@ -349,7 +349,7 @@ automation:
   - alias: accensione ultimo carico spento
     trigger:
     - platform: template
-      value_template: "{{(states('sensor.potenza'))|float <= states('input_select.accensione_automatica_carico')|float }}"
+      value_template: "{{(states('sensor.potenza'))|float(0) <= states('input_select.accensione_automatica_carico')|float(0) }}"
     condition:
       - condition: state
         entity_id: input_boolean.check_accensione_automatica_carico
@@ -410,7 +410,7 @@ script:
               10999
               {% endif %}
               {%- endmacro -%}
-              {{(states('sensor.potenza'))|float > limite_kw()|float }}
+              {{(states('sensor.potenza'))|float(0) > limite_kw()|float(0) }}
         sequence:
           - service: input_text.set_value
             data:
