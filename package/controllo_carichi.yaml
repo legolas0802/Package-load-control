@@ -214,7 +214,7 @@ template:
         state: "{{states('input_text.data_ultimo_intervento')}}"
       
       - name: "Potenza"
-        state: "{{ states(state_attr('sensor.ultimo_carico','power'))|float }}"
+        state: "{{ states(state_attr('sensor.ultimo_carico','power'))|float(0) }}"
         unit_of_measurement: W
 
 
