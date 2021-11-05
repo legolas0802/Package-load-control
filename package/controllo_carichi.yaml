@@ -309,6 +309,7 @@ automation:
             {{ device.entity_id }}
             {%- endif -%}
             {%- endfor -%}
+          - not selected
 
   - alias: innesco controllo carichi
     trigger:
