@@ -153,7 +153,7 @@ input_select:
 
   lista_carichi:
     options: 
-      - not selected
+      - not_select
 
   accensione_automatica_carico:
     name: Soglia Accensione Carico (W)
@@ -245,71 +245,20 @@ automation:
     - service: input_select.set_options
       data_template:
         entity_id: input_select.lista_carichi
-        options:  
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_1.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_2.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_3.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_4.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_5.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_6.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_7.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_8.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - >-
-            {%- set domain = ['switch', 'climate']-%}
-            {%- for device in states if device.domain in domain -%}
-            {%- if device.name|lower == states.input_select.carico_9.state|lower -%}
-            {{ device.entity_id }}
-            {%- endif -%}
-            {%- endfor -%}
-          - not selected
+        options: >-
+              {%- macro lista_carico_entity() -%}
+              {% set domains = states.switch | list + states.climate | list %}
+              {% set carichi = states.input_select| selectattr('object_id', 'match', 'carico_.*') |map(attribute="state")|list %}
+              {%- for element in carichi -%}
+              {% if domains| selectattr('attributes.friendly_name', 'in', element)
+              | map(attribute="entity_id") |join(',') != "" %}
+              "{{ domains| selectattr('attributes.friendly_name', 'in', element)
+              | map(attribute="entity_id") |join(',')}}",
+               {% endif %}
+              {% endfor %}
+              {%- endmacro -%} 
+              [{{ lista_carico_entity()}} "not_select"]
+ 
 
   - alias: innesco controllo carichi
     trigger:
@@ -342,7 +291,7 @@ automation:
         12999
         {% endif %}
         {%- endmacro -%}
-        {{(states('sensor.potenza'))|int > calcolo_soglia_instantanea()|int }}
+        {{(states('sensor.potenza'))|int(0) > calcolo_soglia_instantanea()|int }}
     action:
     - service: script.turn_on
       entity_id: script.spegni_carico
@@ -375,10 +324,10 @@ automation:
     action:
       - service: script.my_notify
         data:
+          no_show: 1
           title: "Controllo Carichi"
           message: "il controllo carichi ha spento {{ states('sensor.ultimo_carico') }}"
           google: true
-          alexa: true
 
   - alias: notifica accensione carico hub
     id: notifica accensione carico hub
@@ -388,10 +337,10 @@ automation:
     action:
       - service: script.my_notify
         data:
+          no_show: 1
           title: "Controllo Carichi"
           message: "il controllo carichi ha acceso {{ states('sensor.ultimo_carico') }}"
           google: true
-          alexa: true
 
 script:
   spegni_carico:
@@ -419,7 +368,7 @@ script:
               value: >-
                 {%- macro spegni_primo_carico() -%}
                 {%- set entity_carico_da_spegnere = states.input_select.lista_carichi.attributes.options|join(',')-%}
-                {%- for item in entity_carico_da_spegnere.split(',') if (states(item) != 'off') and (item != '')-%}
+                {%- for item in entity_carico_da_spegnere.split(',') if (states(item) != 'off') and (item != '') and (states(item) != 'unavailable')-%}
                 {{ item }}{% if not loop.last %},{% endif %}
                 {%- endfor -%}
                 {%- endmacro -%}  
@@ -433,7 +382,7 @@ script:
               entity_id: >-
                 {%- macro spegni_primo_carico() -%}
                 {%- set entity_carico_da_spegnere = states.input_select.lista_carichi.attributes.options|join(',')-%}
-                {%- for item in entity_carico_da_spegnere.split(',') if (states(item) != 'off' and (item != ''))-%}
+                {%- for item in entity_carico_da_spegnere.split(',') if (states(item) != 'off') and (item != '') and (states(item) != 'unavailable')-%}
                 {{ item }}{% if not loop.last %},{% endif %}
                 {%- endfor -%}
                 {%- endmacro -%}  
@@ -443,3 +392,19 @@ script:
           - event: notifica_carico_spento
           - delay:
               seconds: 30
+
+rest_command:
+  workaround_set_options:
+    url: "http://localhost:8123/api/services/input_select/set_options"
+    method: POST
+    headers:
+      authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI3ZTRkNWQ4MDYyNjc0YWFmYjljNGQ0NmZmZmJmNDI5NSIsImlhdCI6MTY0NjQ4NDI3NCwiZXhwIjoxOTYxODQ0Mjc0fQ.JTwMWwo0FdxOEnTnlkrqtuvSYFado44Ut3eZu5S9NW8'
+      content-type: application/json
+    content_type: application/json
+    payload: >-
+      {
+        "entity_id": "input_select.cc_prova",
+        "options": [
+      "1","2"
+        ]
+      }
