@@ -392,19 +392,3 @@ script:
           - event: notifica_carico_spento
           - delay:
               seconds: 30
-
-rest_command:
-  workaround_set_options:
-    url: "http://localhost:8123/api/services/input_select/set_options"
-    method: POST
-    headers:
-      authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI3ZTRkNWQ4MDYyNjc0YWFmYjljNGQ0NmZmZmJmNDI5NSIsImlhdCI6MTY0NjQ4NDI3NCwiZXhwIjoxOTYxODQ0Mjc0fQ.JTwMWwo0FdxOEnTnlkrqtuvSYFado44Ut3eZu5S9NW8'
-      content-type: application/json
-    content_type: application/json
-    payload: >-
-      {
-        "entity_id": "input_select.cc_prova",
-        "options": [
-      "1","2"
-        ]
-      }
