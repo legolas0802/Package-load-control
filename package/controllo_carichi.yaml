@@ -250,9 +250,9 @@ automation:
               {% set domains = states.switch | list + states.climate | list %}
               {% set carichi = states.input_select| selectattr('object_id', 'match', 'carico_.*') |map(attribute="state")|list %}
               {%- for element in carichi -%}
-              {% if domains| selectattr('attributes.friendly_name', 'in', element)
+              {% if domains| selectattr('attributes.friendly_name', 'eq', element)
               | map(attribute="entity_id") |join(',') != "" %}
-              "{{ domains| selectattr('attributes.friendly_name', 'in', element)
+              "{{ domains| selectattr('attributes.friendly_name', 'eq', element)
               | map(attribute="entity_id") |join(',')}}",
                {% endif %}
               {% endfor %}
